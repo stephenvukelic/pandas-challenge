@@ -1,0 +1,94 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
+# Dependencies and Setup
+import pandas as pd
+
+# Load file 
+data_file = "Resources/purchase_data.csv"
+
+# Read Purchasing file and store into Pandas data frame
+purchase_data = pd.read_csv(data_file)
+purchase_data.head()
+
+
+# In[2]:
+
+
+# player count
+players_count = len(purchase_data["SN"].unique())
+players_count
+
+
+# In[3]:
+
+
+# Run Purchasing Analysis (Total)
+unique = len(purchase_data["Item ID"].unique())
+unique
+
+average = purchase_data["Price"].mean()
+average
+
+total = purchase_data["Price"].sum()
+total
+
+count = len(purchase_data["Item ID"].value_counts())
+count
+
+# Collecting a summary of all numeric data
+summary_data = pd.DataFrame({"Number of Unique Items":[unique],
+                             "Average Price":[average],
+                             "Number Purchases":[count],
+                             "Total Revenue":[total]})
+summary_data
+
+
+# In[4]:
+
+
+# Gender Demographics
+
+# Percentage and Count of Players
+grouped_gender_data = purchase_data.groupby(["Gender"])
+
+count=grouped_gender_data["SN"].value_counts().count()
+
+total=purchase_data.groupby("Gender").SN.nunique()
+
+percent_players = (total / count) * 100
+
+#Gender Summary Data Frame
+gendersummary_df=pd.DataFrame({"Total Count":total, "Percentage of Players":percent_players})
+
+gendersummary_df
+
+
+# In[5]:
+
+
+# Purchasing Analysis
+
+purchase_data.head()
+
+purchase_count_df = purchase_data.groupby(['Gender','Item Name'])['Gender'].count
+purchase_count_df
+
+average_df = purchase_data.groupby(['Gender','Price'])['Gender'].mean
+average_df
+
+purchase_value_df = purchase_data.groupby(['Gender', 'Price'])['Gender'].sum
+purchase_value_df 
+                                           
+average_value_df = (purchase_value / purchase_count)
+average_value_df
+                                           
+purchasing_analysis_df = pd.DataFrame({"Purchase Count":[purchase_count_df],
+                                       "Average Purchase Price":[average_df],
+                                      "Total Price Value":[purchase_value-df],
+                                       "Avg Total Purchases per Person":[average_value-df]})     
+purchasing_analysis_df
+
